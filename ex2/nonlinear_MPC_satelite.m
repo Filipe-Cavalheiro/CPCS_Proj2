@@ -13,18 +13,32 @@ N  = 5;                    % NMPC horizon
 
 J = diag([125.734 216.211 234.055]);
 
-% Reference (Euler angles -> Rotation matrix)
-eul_ref = deg2rad([30; -70; 132]);   % desired orientation
-Rref = eul2rotm(eul_ref', 'ZYX');    % MATLAB has some specific functions XD
-xref = [Rref(:); zeros(3,1)];
-
 % Initial condition
-R0 = eye(3);
-w0 = [0.5; -0.3; 0.2];
+eul_init = deg2rad((rand(3,1)-ones(3,1)*0.5)*360);   % desired orientation
+R0 = eul2rotm(eul_init', 'ZYX');    % MATLAB has some specific functions
+w0 = rand(3,1);
 x  = [R0(:); w0];
 
+i = 1;
+ex = R0(i,:)';     
+ex = ex / norm(ex);
+
+% choose any vector not parallel
+v = [0;0;1];
+if abs(dot(ex,v)) > 0.9
+    v = [0;1;0];
+end
+
+ey = cross(v, ex); 
+ey = ey / norm(ey);
+ez = cross(ex, ey);
+
+Rref = [ex ey ez]';
+constraint_vec = R0(i,:);
+xref = [Rref(:); zeros(3,1)];
+
 % Cost matrices
-Q = diag([50*ones(9,1); 5*ones(3,1)]); 
+Q = diag([50*ones(9,1); 5*ones(3,1)]); % care more about position than velocity
 P = Q;
 R = 0.01*eye(nu);
 
@@ -43,11 +57,10 @@ ulog = zeros(nu,Nsim);
 
 % ================= MAIN SIMULATION LOOP =================
 for k = 1:Nsim
-    disp("current k: " + k);
     xlog(:,k) = x;
 
     % Solve NMPC
-    u = attController(x, xref, N, nx, nu,Ts, Qbar, Rbar, opts, J);
+    u = constrainedAttController(x, xref, N, nx, nu,Ts, Qbar, Rbar, opts, J, constraint_vec, i);
 
     ulog(:,k) = u;
 
@@ -58,6 +71,7 @@ for k = 1:Nsim
     % Stop condition (0.1 deg)
     Re = reshape(x(1:9),3,3)'*Rref;
     ang_err = acos((trace(Re)-1)/2);
+    disp("current k: " + k + " ang err: " + ang_err);
     if rad2deg(abs(ang_err)) < 0.1
         fprintf('Converged at t = %.2f s\n',k*Ts);
         break;
@@ -71,6 +85,7 @@ title('Control effort (deg)');
 grid on;
 
 figure;
+hold on;
 for i = 1:1:k
     clf;
     plotSatelliteAxes(reshape(xlog(1:9,i),3,3));
@@ -80,36 +95,50 @@ for i = 1:1:k
 end
 
 %% ================= FUNCTIONS =================
-function u = attController(x0, xref, N, nx, nu, Ts, Qbar, Rbar, opts, J)
-    % Decision variables: [X; U]
+function u = constrainedAttController(x0, xref, N, nx, nu, Ts, ...
+                                       Qbar, Rbar, opts, J, v, i)
+
+    v = v / norm(v);                 % ensure unit vector
+    cosMax = cosd(10);               % 10 deg constraint
+
     XU0 = zeros((N+1)*nx + N*nu,1);
 
     cost = @(XU) (XU - [repmat(xref,N+1,1); zeros(N*nu,1)])' ...
                   * blkdiag(Qbar,Rbar) ...
                   * (XU - [repmat(xref,N+1,1); zeros(N*nu,1)]);
 
-    nonlcon = @(XU) dynamicsConstraint(XU, x0, N, nx, nu, Ts, J);
+    nonlcon = @(XU) dynamicsAndAngleConstraint( ...
+                     XU, x0, N, nx, nu, Ts, J, v, cosMax, i);
 
-    XU = fmincon(cost,XU0,[],[],[],[],[],[],nonlcon,opts);
+    XU = fmincon(cost, XU0, [], [], [], [], [], [], nonlcon, opts);
 
     u = XU((N+1)*nx + (1:nu));
 end
 
-function [c,ceq] = dynamicsConstraint(XU, x0, N, nx, nu, Ts, J)
+function [c,ceq] = dynamicsAndAngleConstraint( ...
+                    XU, x0, N, nx, nu, Ts, J, v, cosMax, i)
 
-    c = [];
+    c   = [];
     ceq = [];
 
-    X = reshape(XU(1:(N+1)*nx),nx,N+1);
-    U = reshape(XU((N+1)*nx+1:end),nu,N);
+    X = reshape(XU(1:(N+1)*nx), nx, N+1);
+    U = reshape(XU((N+1)*nx+1:end), nu, N);
 
+    % Initial condition
     ceq = [ceq; X(:,1) - x0];
 
     for k = 1:N
+        % Dynamics constraint
         xnext = X(:,k) + Ts*satelliteDynamics(X(:,k), U(:,k), J);
-        ceq = [ceq; X(:,k+1) - xnext];
+        ceq   = [ceq; X(:,k+1) - xnext];
+        
+        % ----- Angle constraints -----
+        R = reshape(X(1:9,k),3,3);
+        bi = R(:,i);                 % body axis in inertial frame
+        c  = [c; cosMax - dot(bi,v)];
     end
 end
+
 
 function xdot = satelliteDynamics(x,u,J)
 
