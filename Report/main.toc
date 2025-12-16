@@ -1,0 +1,9 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{\numberline {1}Objectives of the Project}{3}{section.1}%
+\contentsline {section}{\numberline {2}Proposed Control Strategy}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}State and Control Definition}{3}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}NMPC Formulation}{3}{subsection.2.2}%
+\contentsline {section}{\numberline {3}Task 1: Unconstrained Attitude Control}{4}{section.3}%
+\contentsline {section}{\numberline {4}Task 2: Constrained Attitude Control}{5}{section.4}%
+\contentsline {section}{\numberline {5}Discussion and Conclusions}{7}{section.5}%
+\contentsline {section}{\numberline {6}Anex}{8}{section.6}%

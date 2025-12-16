@@ -1,4 +1,4 @@
-% ================= SATELLITE NMPC – EXERCISE 1 =================
+% ================= SATELLITE NMPC - EXERCISE 1 =================
 clear; clc; close all;
 
 % Parameters
