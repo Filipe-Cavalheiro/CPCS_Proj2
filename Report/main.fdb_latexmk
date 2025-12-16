@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1765884285.03512 "c:/Users/caval/Documents/Universidade/9_Semestre/CPCS/CPCS_Proj2/Report/main.tex" "main.pdf" "main" 1765884288.3219 0
+["pdflatex"] 1765884481.94415 "c:/Users/caval/Documents/Universidade/9_Semestre/CPCS/CPCS_Proj2/Report/main.tex" "main.pdf" "main" 1765884485.66794 0
   "C:/Users/caval/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1765480720 263333 19428f587dd07db79a288bc7aad8d496 ""
   "C:/Users/caval/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/ecbx1000.pk" 1765473440 25420 694c68bc2a4431f720e204adf34d5561 ""
   "C:/Users/caval/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/ecbx1200.pk" 1765473444 31952 5293a8b4df51d8a7a1ce023b4bff4448 ""
@@ -307,14 +307,14 @@
   "Imagens/control_effort_ex2.png" 1765883787 36684 cf90d5639d5e630bb63be1f405d560b1 ""
   "Imagens/ex1_final.png" 1765880473 106262 f2a01edec38ac284f7a57f6d66933e2c ""
   "Imagens/ex1_init.png" 1765880514 104922 914fb85830e146bf62397c5f1100493e ""
-  "Imagens/ex2_final.png" 1765883841 52038 d44087adcb91ca10c93ac6848a1d3379 ""
-  "Imagens/ex2_init.png" 1765883821 52052 3e182250fad2c0e5026d631ee086bc03 ""
-  "c:/Users/caval/Documents/Universidade/9_Semestre/CPCS/CPCS_Proj2/Report/main.tex" 1765884284 25679 4267bda04aaa9aece2e89efffbca21d1 ""
-  "main.aux" 1765884287 3018 3bf12d3c45541b7c784624d8b2a7c182 "pdflatex"
-  "main.lof" 1765884287 530 401f28058023d022fd65f614a4a4d270 "pdflatex"
-  "main.out" 1765884287 1419 b48726413a2ae8aecd4951b6aedc71db "pdflatex"
-  "main.tex" 1765884284 25679 4267bda04aaa9aece2e89efffbca21d1 ""
-  "main.toc" 1765884287 696 386715085cec4f30fcb164fe96e6bb12 "pdflatex"
+  "Imagens/ex2_final.png" 1765884480 110969 277375a40b2d38a2532f36ef1ac4d74e ""
+  "Imagens/ex2_init.png" 1765884448 111671 b2c20dfb3d9ac6cfd093825122f12e4e ""
+  "c:/Users/caval/Documents/Universidade/9_Semestre/CPCS/CPCS_Proj2/Report/main.tex" 1765884483 25679 4267bda04aaa9aece2e89efffbca21d1 ""
+  "main.aux" 1765884485 3018 f0f550ec7e33ffb77ebded6fdaf06375 "pdflatex"
+  "main.lof" 1765884485 530 13c9df4940bc62ec9f06dc1bbbad8dc2 "pdflatex"
+  "main.out" 1765884485 1419 b48726413a2ae8aecd4951b6aedc71db "pdflatex"
+  "main.tex" 1765884483 25679 4267bda04aaa9aece2e89efffbca21d1 ""
+  "main.toc" 1765884485 696 386715085cec4f30fcb164fe96e6bb12 "pdflatex"
   (generated)
   "main.aux"
   "main.lof"
